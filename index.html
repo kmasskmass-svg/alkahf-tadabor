@@ -362,16 +362,24 @@
   }
   .tasbih-reset-btn:hover{background:var(--gold); color:#fff;}
 
-  /* ===== وضع القراءة فقط ===== */
+  /* ===== وضع القراءة فقط + علامة الحفظ ===== */
   .top-bar-group{max-width:960px; margin:10px auto 0;}
-  .reading-toggle-row{margin:0; text-align:center;}
+  .reading-toggle-row{margin:0; display:flex;}
   .reading-toggle-btn{
-    width:100%;
-    padding:9px 20px; border-radius:20px 20px 0 0;
-    border:1px solid var(--gold-light); border-bottom:1px solid rgba(216,185,104,0.4);
+    flex:1;
+    padding:9px 16px; border-radius:0 20px 0 0;
+    border:1px solid var(--gold-light); border-left:none; border-bottom:1px solid rgba(216,185,104,0.4);
     background:var(--teal); color:#fff; font-family:'Amiri', serif; font-size:13px; cursor:pointer;
   }
   .reading-toggle-btn:hover{background:var(--teal-deep);}
+  .bookmark-toggle-btn{
+    flex:0 0 46px;
+    padding:9px 0; border-radius:20px 0 0 0;
+    border:1px solid var(--gold-light); border-bottom:1px solid rgba(216,185,104,0.4);
+    background:var(--teal); color:#fff; font-size:16px; cursor:pointer;
+  }
+  .bookmark-toggle-btn:hover{background:var(--teal-deep);}
+  .bookmark-toggle-btn.has-mark{background:#8A6B2E; border-color:#8A6B2E;}
   .reading-exit-btn{
     display:none; position:fixed; top:10px; left:10px; z-index:700;
     padding:8px 14px; border-radius:20px; background:var(--maroon); color:#fff;
@@ -625,6 +633,8 @@
     header.hero{ padding:16px 14px 12px; }
     .meta-row{ gap:12px; margin-top:8px; }
     .ayah-mark{ width:26px; height:26px; font-size:10.5px; margin:0 2px; }
+    .reading-toggle-btn{ padding:8px 8px; font-size:11.5px; }
+    .bookmark-toggle-btn{ flex:0 0 40px; font-size:15px; }
     .fab-main{ width:50px; height:50px; font-size:20px; top:10px; right:10px; }
     .fab-menu-panel{ top:64px; right:10px; width:calc(100vw - 20px); max-height:78vh; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); }
     .fab-menu-item{ font-size:12px; padding:5px 14px 5px 5px; }
@@ -664,6 +674,7 @@
   <div class="top-bar-group">
     <div class="reading-toggle-row">
       <button id="toggleReadingMode" class="reading-toggle-btn">📖 وضع القراءة فقط (تقليب بالإصبع)</button>
+      <button id="bookmarkToggleBtn" class="bookmark-toggle-btn" title="علامة الحفظ">📌</button>
     </div>
 
     <div class="ayah-ticker" id="ayahTicker" title="اضغط للإيقاف/التشغيل">
@@ -709,7 +720,6 @@
   <div class="fab-menu-item" id="fabVirtues" role="menuitem" tabindex="0"><span class="dot" style="background:#8A5A2E;">✨</span>فضائل السورة</div>
   <div class="fab-menu-item" id="openTasbih" role="menuitem" tabindex="0"><span class="dot" style="background:#7A2E2E;">📿</span>تسبيح وصلاة</div>
   <div class="fab-menu-item" id="fabMaqasid" role="menuitem" tabindex="0"><span class="dot" style="background:#1F5C4A;">🎯</span>مقاصد السورة</div>
-  <div class="fab-menu-item" id="fabBookmark" role="menuitem" tabindex="0"><span class="dot" style="background:#8A6B2E;">📌</span>علامة الحفظ</div>
   <div class="fab-menu-item" id="fabSearch" role="menuitem" tabindex="0"><span class="dot" style="background:#3E5A8A;">🔍</span>البحث الشامل</div>
   <div class="fab-menu-item" id="fabAudio" role="menuitem" tabindex="0"><span class="dot" style="background:#2E4A6B;">🎧</span>الاستماع للسورة</div>
 </div>
@@ -2958,14 +2968,17 @@ const goBookmarkBtn = document.getElementById('goBookmark');
 
 function refreshBookmarkUI(){
   const saved = safeGetBookmark();
+  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
   if(saved !== null && saved >= 0 && saved < totalPages){
     const startIdx = saved * AYAT_PER_PAGE;
     const endIdx = Math.min(startIdx + AYAT_PER_PAGE, data.length);
     bookmarkInfo.textContent = `آخر موضع محفوظ: صفحة ${ar(saved+1)} (الآيات ${ar(data[startIdx].n)}–${ar(data[endIdx-1].n)})`;
     goBookmarkBtn.disabled = false;
+    if(bookmarkToggleBtn) bookmarkToggleBtn.classList.add('has-mark');
   } else {
     bookmarkInfo.textContent = 'لم تحفظ موضعًا بعد';
     goBookmarkBtn.disabled = true;
+    if(bookmarkToggleBtn) bookmarkToggleBtn.classList.remove('has-mark');
   }
 }
 saveBookmarkBtn.addEventListener('click', ()=>{
@@ -2982,7 +2995,7 @@ refreshBookmarkUI();
 
 /* ===== كرتا علامة الحفظ والبحث العائمتان ===== */
 const bookmarkOverlay = document.getElementById('bookmarkOverlay');
-document.getElementById('fabBookmark').onclick = ()=> bookmarkOverlay.classList.add('open');
+document.getElementById('bookmarkToggleBtn').onclick = ()=> bookmarkOverlay.classList.add('open');
 document.getElementById('bookmarkClose').onclick = ()=> bookmarkOverlay.classList.remove('open');
 bookmarkOverlay.onclick = (e)=>{ if(e.target === bookmarkOverlay) bookmarkOverlay.classList.remove('open'); };
 
