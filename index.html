@@ -784,6 +784,18 @@
   .story-card-title{ font-family:'Amiri Quran', serif; font-size:18px; color:var(--teal-deep); margin-bottom:6px; }
   .story-card-desc{ font-family:'Amiri', serif; font-size:11.5px; color:#7a715c; line-height:1.7; }
 
+  /* ===== بطاقات "ثمرات": روابط لتطبيقات أخرى من إعداد صاحب هذا التطبيق ===== */
+  .fruits-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:600px){ .fruits-grid{ grid-template-columns:1fr; } }
+  .fruit-card{
+    background:linear-gradient(160deg,#FBF8EF,#F4EFE2); border:1.5px solid var(--gold);
+    border-radius:10px; padding:16px 14px; text-align:center; cursor:pointer;
+    transition:transform .15s, box-shadow .15s; display:block; text-decoration:none;
+  }
+  .fruit-card:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,0.12); background:linear-gradient(160deg,#fff,#FBF8EF); }
+  .fruit-card-icon{ font-size:26px; margin-bottom:8px; }
+  .fruit-card-title{ font-family:'Amiri Quran', serif; font-size:16px; color:var(--teal-deep); line-height:1.5; }
+
   .rule-group{background:#fff; border:1px solid var(--line); border-radius:6px; margin-bottom:16px; overflow:hidden;}
   .rule-group-head{background:linear-gradient(90deg, var(--teal-deep), var(--teal)); color:#fff; padding:11px 18px; display:flex; align-items:center; gap:10px;}
   .rule-group-num{font-family:'Amiri', serif; font-size:12px; width:24px;height:24px; display:flex;align-items:center;justify-content:center; border:1px solid var(--gold-light); border-radius:50%; color:var(--gold-light); flex-shrink:0;}
@@ -1019,6 +1031,7 @@
   <div class="fab-menu-item" id="fabAudio" role="menuitem" tabindex="0"><span class="dot" style="background:#2E4A6B;">🎧</span>الاستماع للسورة</div>
   <div class="fab-menu-item" id="fabBook" role="menuitem" tabindex="0"><span class="dot" style="background:#4A3B6B;">📕</span>الكتاب الكامل</div>
   <div class="fab-menu-item" id="fabVideo" role="menuitem" tabindex="0"><span class="dot" style="background:#8A2E2E;">🎬</span>فيديو تعريفي</div>
+  <div class="fab-menu-item" id="fabFruits" role="menuitem" tabindex="0"><span class="dot" style="background:#3E6B2E;">🌳</span>ثمرات</div>
 </div>
 
 <!-- ===== نافذة إعدادات العرض ===== -->
@@ -1596,6 +1609,7 @@
         <li><b>فهرس القصص:</b> بطاقات القصص الأربع في السورة مع نطاق آيات كل قصة، للانتقال المباشر إليها.</li>
         <li><b>علامة الحفظ:</b> حفظ موضع القراءة والعودة إليه لاحقًا.</li>
         <li><b>البحث الشامل:</b> بحث بالرقم أو النص أو الكلمة أو التقسيم الموضوعي.</li>
+        <li><b>ثمرات 🌳:</b> تطبيقات أخرى من إعداد صاحب هذا التطبيق، بروابط مباشرة لكل منها.</li>
       </ul>
     </div>
   </div>
@@ -1867,6 +1881,47 @@
       <h4>ملاحظة</h4>
       <p>هذا التثبيت يُنشئ اختصارًا لهذه الصفحة على جهازك فقط، ولا يتطلب متجر تطبيقات ولا مساحة تخزين تُذكر؛ وأي بيانات محفوظة (كعلامة الحفظ) تبقى مرتبطة بالمتصفح الذي ثبّتّ منه.</p>
     </div>
+  </div>
+</template>
+
+<template id="tpl-fruits">
+  <div class="rules-header">
+    <h2>🌳 ثمرات</h2>
+    <p>تطبيقات أخرى من إعداد صاحب هذا التطبيق، لعلها تنفعك — اضغط أي بطاقة لفتحها في نافذة جديدة</p>
+  </div>
+  <div class="fruits-grid">
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/home-budget/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">💰</div>
+      <div class="fruit-card-title">نظام الميزانية الذكي</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/kashafnew/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">🎭</div>
+      <div class="fruit-card-title">كشاف القناع الصغير</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/Etmam-MatnMukhalafat/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">📗</div>
+      <div class="fruit-card-title">متن اتمام المطالب - مخالفات المتون الستة</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/ALMATNALMODAHAB/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">📘</div>
+      <div class="fruit-card-title">المتن المذهب بأدلة مسائل مختصرات الفقه الحنبلي</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/EkhtesarTafseer/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">📝</div>
+      <div class="fruit-card-title">الاختصار والجمع والتكميل</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/AlsalahMokaranah/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">🕌</div>
+      <div class="fruit-card-title">الصلاة على المذاهب الأربعة</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/Botaka-Design/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">🎨</div>
+      <div class="fruit-card-title">زخرفة</div>
+    </a>
+    <a class="fruit-card" href="https://kmasskmass-svg.github.io/Takaleef-Arbah/" target="_blank" rel="noopener">
+      <div class="fruit-card-icon">🧺</div>
+      <div class="fruit-card-title">ترف - تطبيق للأسر المنتجة</div>
+    </a>
   </div>
 </template>
 
@@ -4175,6 +4230,7 @@ document.getElementById('fabHowto').onclick = ()=> openTemplateModal('tpl-howto'
 document.getElementById('fabVirtues').onclick = ()=> openTemplateModal('tpl-virtues');
 document.getElementById('fabMaqasid').onclick = ()=> openTemplateModal('tpl-maqasid');
 document.getElementById('fabInstall').onclick = ()=> openTemplateModal('tpl-install');
+document.getElementById('fabFruits').onclick = ()=> openTemplateModal('tpl-fruits');
 
 /* ===== الكرة الرئيسية: فتح/طي قائمة الكور ===== */
 const fabMain = document.getElementById('fabMain');
