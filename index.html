@@ -455,6 +455,7 @@
   }
   .resume-banner{ background:linear-gradient(90deg, var(--teal-deep), var(--teal)); }
   .daily-banner{ background:linear-gradient(90deg, #5B4A8A, #7A63B0); }
+  .community-banner{ background:linear-gradient(90deg, #1E7A5A, #2FA37A); }
   .info-banner-text{ flex:1; font-family:'Amiri', serif; font-size:13px; min-width:200px; line-height:1.7; }
   .info-banner-text b{ display:block; font-size:11.5px; opacity:.85; margin-bottom:2px; font-weight:normal; }
   .info-banner-btn{
@@ -515,6 +516,37 @@
   }
   .personal-note-save-btn:hover{ background:var(--teal); }
   .personal-note-status{ font-family:'Amiri', serif; font-size:11.5px; color:#3E7A3E; }
+
+  /* ===== نافذة إرسال ملاحظة أو تدبر ===== */
+  .feedback-label{
+    display:block; font-family:'Amiri', serif; font-size:13px; color:var(--teal-deep);
+    margin-bottom:6px; font-weight:bold;
+  }
+  .feedback-ayah-note{
+    font-family:'Amiri', serif; font-size:11.5px; color:#8a8068; margin:8px 0 0; line-height:1.6;
+  }
+  .feedback-send-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .feedback-send-btn{
+    flex:1; min-width:160px; background:var(--teal-deep); color:#fff; border:none; border-radius:16px;
+    padding:9px 14px; font-family:'Amiri', serif; font-size:13px; cursor:pointer;
+  }
+  .feedback-send-btn:hover{ background:var(--teal); }
+  .feedback-status{
+    font-family:'Amiri', serif; font-size:12px; color:var(--maroon); margin-top:10px; text-align:center; min-height:16px;
+  }
+  .feedback-community-section{
+    margin-top:16px; padding-top:14px; border-top:1px dashed var(--gold);
+  }
+  .feedback-community-hint{
+    font-family:'Amiri', serif; font-size:11.5px; color:#8a8068; margin:0 0 10px; text-align:center; line-height:1.6;
+  }
+  .feedback-community-btn{
+    text-decoration:none; text-align:center; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .feedback-whatsapp-btn{ background:#25D366; }
+  .feedback-whatsapp-btn:hover{ background:#1EBE57; }
+  .feedback-telegram-btn{ background:#229ED9; }
+  .feedback-telegram-btn:hover{ background:#1B87BC; }
   .ayah-mark.has-personal-note{ box-shadow:0 0 0 2px var(--gold-light); }
   .ayah-mark.is-bookmarked{ box-shadow:0 0 0 2px var(--maroon); position:relative; }
   .ayah-mark.is-bookmarked.has-personal-note{ box-shadow:0 0 0 2px var(--maroon), 0 0 0 4px var(--gold-light); }
@@ -985,6 +1017,11 @@
     <button id="dailyNoteBannerBtn" class="info-banner-btn">اذهب للآية</button>
     <button id="dailyNoteBannerClose" class="info-banner-close" title="إغلاق">×</button>
   </div>
+  <div id="communityBanner" class="info-banner community-banner" style="display:none;">
+    <span class="info-banner-text"><b>شارك معنا 🤝</b>أرسل ملاحظاتك وتدبراتك، أو انضم لمجتمع القراء</span>
+    <button id="communityBannerBtn" class="info-banner-btn">فتح النافذة</button>
+    <button id="communityBannerClose" class="info-banner-close" title="إغلاق">×</button>
+  </div>
   <div class="top-bar-group">
     <div class="reading-toggle-row">
       <button id="toggleReadingMode" class="reading-toggle-btn">📖 وضع القراءة فقط</button>
@@ -1043,6 +1080,7 @@
   <div class="fab-menu-item" id="fabBook" role="menuitem" tabindex="0"><span class="dot" style="background:#4A3B6B;">📕</span>الكتاب الكامل</div>
   <div class="fab-menu-item" id="fabVideo" role="menuitem" tabindex="0"><span class="dot" style="background:#8A2E2E;">🎬</span>فيديو تعريفي</div>
   <div class="fab-menu-item" id="fabFruits" role="menuitem" tabindex="0"><span class="dot" style="background:#3E6B2E;">🌳</span>ثمرات</div>
+  <div class="fab-menu-item" id="fabFeedback" role="menuitem" tabindex="0"><span class="dot" style="background:#2E5A8A;">📝</span>أرسل ملاحظة أو تدبرًا</div>
 </div>
 
 <!-- ===== نافذة إعدادات العرض ===== -->
@@ -1654,6 +1692,7 @@
         <li><b>علامة الحفظ:</b> حفظ الآية التي وصلت إليها بدقة والعودة إليها لاحقًا.</li>
         <li><b>البحث الشامل:</b> بحث بالرقم أو النص أو الكلمة أو التقسيم الموضوعي.</li>
         <li><b>ثمرات 🌳:</b> تطبيقات أخرى من إعداد صاحب هذا التطبيق، بروابط مباشرة لكل منها.</li>
+        <li><b>أرسل ملاحظة أو تدبرًا 📝:</b> نموذج لإرسال ملاحظة أو فائدة جديدة أو تصحيح لمعد التطبيق مباشرة، عبر تيليجرام أو نموذج Google.</li>
       </ul>
     </div>
   </div>
@@ -1978,6 +2017,41 @@
     </a>
   </div>
 </template>
+
+<!-- ===== نافذة إرسال ملاحظة أو تدبر لمعد التطبيق ===== -->
+<div class="modal-overlay" id="feedbackOverlay">
+  <div class="modal-box">
+    <button class="modal-close" id="feedbackClose">×</button>
+    <div class="modal-pad">
+      <div class="rules-header">
+        <h2>📝 أرسل ملاحظتك أو تدبرك</h2>
+        <p>شارك بتصحيح، أو فائدة جديدة، أو أي ملاحظة أخرى — ولك الأجر والثواب</p>
+      </div>
+      <label class="feedback-label" for="feedbackType">نوع الملاحظة</label>
+      <select id="feedbackType" class="cat-filter" style="width:100%; margin-bottom:14px;">
+        <option value="فائدة أو تدبر جديد">💡 فائدة أو تدبر جديد تريد إضافته</option>
+        <option value="تصحيح خطأ">✏️ تصحيح خطأ في فائدة موجودة</option>
+        <option value="اقتراح ميزة">⚙️ اقتراح ميزة أو تحسين</option>
+        <option value="ملاحظة أخرى">💬 ملاحظة أخرى</option>
+      </select>
+      <label class="feedback-label" for="feedbackText">نص الملاحظة</label>
+      <textarea id="feedbackText" class="personal-note-textarea" style="min-height:110px;" placeholder="اكتب هنا ملاحظتك أو تدبرك بالتفصيل..."></textarea>
+      <p id="feedbackAyahNote" class="feedback-ayah-note" style="display:none;"></p>
+      <div class="feedback-send-row">
+        <button type="button" id="feedbackSendTelegram" class="feedback-send-btn">📤 إرسال عبر تيليجرام</button>
+        <button type="button" id="feedbackSendForm" class="feedback-send-btn">📋 إرسال عبر نموذج Google</button>
+      </div>
+      <p id="feedbackStatus" class="feedback-status"></p>
+      <div class="feedback-community-section">
+        <p class="feedback-community-hint">أو انضم مباشرة لمجتمع التطبيق للمشاركة والنقاش مع القراء الآخرين:</p>
+        <div class="feedback-send-row">
+          <a href="https://chat.whatsapp.com/BYfCacPupRj2JrohO7gCqo?s=cl&p=a&ilr=1" target="_blank" rel="noopener" class="feedback-send-btn feedback-community-btn feedback-whatsapp-btn">📱 مجتمع واتساب</a>
+          <a href="https://t.me/+lNjzI7XqmYgxNzg0" target="_blank" rel="noopener" class="feedback-send-btn feedback-community-btn feedback-telegram-btn">📢 قناة تيليجرام</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const data = [
@@ -4118,6 +4192,26 @@ document.getElementById('importSettingsFile').addEventListener('change', (e)=>{
   });
 })();
 
+/* ===== شريط التعريف بميزة المشاركة والتواصل: يظهر يوميًا حتى يُغلق، ويعود غدًا ===== */
+(function initCommunityBanner(){
+  const banner = document.getElementById('communityBanner');
+  if(!banner) return;
+  const todayStr = new Date().toISOString().slice(0,10);
+  const dismissKey = 'kahf_tadabbur_community_dismissed_' + todayStr;
+  let dismissedToday = false;
+  try{ dismissedToday = localStorage.getItem(dismissKey) === '1'; }catch(e){ /* تجاهل */ }
+  if(dismissedToday) return;
+  banner.style.display = 'flex';
+  document.getElementById('communityBannerBtn').addEventListener('click', ()=>{
+    banner.style.display = 'none';
+    document.getElementById('fabFeedback').click();
+  });
+  document.getElementById('communityBannerClose').addEventListener('click', ()=>{
+    banner.style.display = 'none';
+    try{ localStorage.setItem(dismissKey, '1'); }catch(e){ /* تجاهل */ }
+  });
+})();
+
 
 /* ===== كرتا علامة الحفظ والبحث العائمتان ===== */
 const bookmarkOverlay = document.getElementById('bookmarkOverlay');
@@ -4418,6 +4512,55 @@ document.getElementById('fabVirtues').onclick = ()=> openTemplateModal('tpl-virt
 document.getElementById('fabMaqasid').onclick = ()=> openTemplateModal('tpl-maqasid');
 document.getElementById('fabInstall').onclick = ()=> openTemplateModal('tpl-install');
 document.getElementById('fabFruits').onclick = ()=> openTemplateModal('tpl-fruits');
+
+/* ===== إرسال ملاحظة أو تدبر لمعد التطبيق ===== */
+const feedbackOverlay = document.getElementById('feedbackOverlay');
+const feedbackAyahNote = document.getElementById('feedbackAyahNote');
+const feedbackStatus = document.getElementById('feedbackStatus');
+// عنوان نموذج Google (اختياري): إن أنشأ صاحب التطبيق نموذجًا، يضع رابطه هنا ليعمل زر "إرسال عبر نموذج Google"
+const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdRKhUDWTp4Hh-4UcZAe6YZlgli8ghgCpHFtgXWyOoPz5DlBQ/viewform';
+
+document.getElementById('fabFeedback').onclick = ()=>{
+  document.getElementById('feedbackText').value = '';
+  feedbackStatus.textContent = '';
+  const a = (currentVerseIdx !== null && data[currentVerseIdx]) ? data[currentVerseIdx] : null;
+  if(a){
+    feedbackAyahNote.textContent = `📍 ستُرفق الآية ${ar(a.n)} تلقائيًا مع ملاحظتك (آخر آية فتحت فوائدها).`;
+    feedbackAyahNote.style.display = 'block';
+  } else {
+    feedbackAyahNote.style.display = 'none';
+  }
+  feedbackOverlay.classList.add('open');
+};
+document.getElementById('feedbackClose').onclick = ()=> feedbackOverlay.classList.remove('open');
+feedbackOverlay.onclick = (e)=>{ if(e.target === feedbackOverlay) feedbackOverlay.classList.remove('open'); };
+
+function buildFeedbackMessage(){
+  const type = document.getElementById('feedbackType').value;
+  const text = document.getElementById('feedbackText').value.trim();
+  const a = (currentVerseIdx !== null && data[currentVerseIdx]) ? data[currentVerseIdx] : null;
+  return { type, text, ayah: a ? a.n : null };
+}
+document.getElementById('feedbackSendTelegram').onclick = ()=>{
+  const { type, text, ayah } = buildFeedbackMessage();
+  if(!text){ feedbackStatus.textContent = '⚠ يرجى كتابة نص الملاحظة أولًا.'; return; }
+  let msg = `📩 ملاحظة من تطبيق تدبرات سورة الكهف\nالنوع: ${type}\n`;
+  if(ayah) msg += `الآية المرتبطة: ${ayah}\n`;
+  msg += `\nالنص:\n${text}`;
+  window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(msg)}`, '_blank');
+  feedbackStatus.textContent = '✓ فُتحت نافذة تيليجرام؛ أكمل الإرسال من هناك.';
+};
+document.getElementById('feedbackSendForm').onclick = ()=>{
+  const { type, text, ayah } = buildFeedbackMessage();
+  if(!text){ feedbackStatus.textContent = '⚠ يرجى كتابة نص الملاحظة أولًا.'; return; }
+  if(!GOOGLE_FORM_URL){
+    feedbackStatus.textContent = '⚠ هذا الخيار لم يُفعَّل بعد من صاحب التطبيق؛ جرّب الإرسال عبر تيليجرام حاليًا.';
+    return;
+  }
+  const url = `${GOOGLE_FORM_URL}?usp=pp_url&entry.1991112370=${encodeURIComponent(type)}&entry.1815701286=${encodeURIComponent(text)}&entry.310646797=${encodeURIComponent(ayah||'')}`;
+  window.open(url, '_blank');
+  feedbackStatus.textContent = '✓ فُتح نموذج Google؛ راجع الحقول وأرسل من هناك.';
+};
 
 /* ===== الكرة الرئيسية: فتح/طي قائمة الكور ===== */
 const fabMain = document.getElementById('fabMain');
