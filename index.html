@@ -456,6 +456,7 @@
   .resume-banner{ background:linear-gradient(90deg, var(--teal-deep), var(--teal)); }
   .daily-banner{ background:linear-gradient(90deg, #5B4A8A, #7A63B0); }
   .community-banner{ background:linear-gradient(90deg, #1E7A5A, #2FA37A); }
+  .updates-banner{ background:linear-gradient(90deg, #8A5A2E, #C08A45); }
   .info-banner-text{ flex:1; font-family:'Amiri', serif; font-size:13px; min-width:200px; line-height:1.7; }
   .info-banner-text b{ display:block; font-size:11.5px; opacity:.85; margin-bottom:2px; font-weight:normal; }
   .info-banner-btn{
@@ -547,6 +548,24 @@
   .feedback-whatsapp-btn:hover{ background:#1EBE57; }
   .feedback-telegram-btn{ background:#229ED9; }
   .feedback-telegram-btn:hover{ background:#1B87BC; }
+
+  /* ===== نافذة آخر التحديثات ===== */
+  .updates-date-header{
+    font-family:'Amiri', serif; font-size:13px; color:var(--gold); font-weight:bold;
+    margin:18px 0 8px; padding-bottom:4px; border-bottom:1px dashed var(--gold);
+  }
+  .updates-date-header:first-child{ margin-top:0; }
+  .update-item{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:#FBF8EF; border-radius:6px; padding:10px 12px; margin-bottom:8px;
+    border-right:3px solid var(--gold-light);
+  }
+  .update-item span{ font-family:'Amiri', serif; font-size:12.5px; color:var(--ink); line-height:1.6; }
+  .update-goto-btn{
+    flex-shrink:0; background:var(--teal-deep); color:#fff; border:none; border-radius:12px;
+    padding:5px 12px; font-family:'Amiri', serif; font-size:11.5px; cursor:pointer;
+  }
+  .update-goto-btn:hover{ background:var(--teal); }
   .ayah-mark.has-personal-note{ box-shadow:0 0 0 2px var(--gold-light); }
   .ayah-mark.is-bookmarked{ box-shadow:0 0 0 2px var(--maroon); position:relative; }
   .ayah-mark.is-bookmarked.has-personal-note{ box-shadow:0 0 0 2px var(--maroon), 0 0 0 4px var(--gold-light); }
@@ -1022,6 +1041,11 @@
     <button id="communityBannerBtn" class="info-banner-btn">فتح النافذة</button>
     <button id="communityBannerClose" class="info-banner-close" title="إغلاق">×</button>
   </div>
+  <div id="updatesBanner" class="info-banner updates-banner" style="display:none;">
+    <span class="info-banner-text"><b>🆕 تحديثات جديدة</b>أُضيفت فوائد وتحسينات جديدة منذ آخر زيارة لك</span>
+    <button id="updatesBannerBtn" class="info-banner-btn">عرض التفاصيل</button>
+    <button id="updatesBannerClose" class="info-banner-close" title="إغلاق">×</button>
+  </div>
   <div class="top-bar-group">
     <div class="reading-toggle-row">
       <button id="toggleReadingMode" class="reading-toggle-btn">📖 وضع القراءة فقط</button>
@@ -1081,6 +1105,7 @@
   <div class="fab-menu-item" id="fabVideo" role="menuitem" tabindex="0"><span class="dot" style="background:#8A2E2E;">🎬</span>فيديو تعريفي</div>
   <div class="fab-menu-item" id="fabFruits" role="menuitem" tabindex="0"><span class="dot" style="background:#3E6B2E;">🌳</span>ثمرات</div>
   <div class="fab-menu-item" id="fabFeedback" role="menuitem" tabindex="0"><span class="dot" style="background:#2E5A8A;">📝</span>أرسل ملاحظة أو تدبرًا</div>
+  <div class="fab-menu-item" id="fabUpdates" role="menuitem" tabindex="0"><span class="dot" style="background:#8A5A2E;">🆕</span>آخر التحديثات</div>
 </div>
 
 <!-- ===== نافذة إعدادات العرض ===== -->
@@ -1693,6 +1718,7 @@
         <li><b>البحث الشامل:</b> بحث بالرقم أو النص أو الكلمة أو التقسيم الموضوعي.</li>
         <li><b>ثمرات 🌳:</b> تطبيقات أخرى من إعداد صاحب هذا التطبيق، بروابط مباشرة لكل منها.</li>
         <li><b>أرسل ملاحظة أو تدبرًا 📝:</b> نموذج لإرسال ملاحظة أو فائدة جديدة أو تصحيح لمعد التطبيق مباشرة، عبر تيليجرام أو نموذج Google.</li>
+        <li><b>آخر التحديثات 🆕:</b> سجل بكل الفوائد والتحسينات المضافة حديثًا، مع روابط مباشرة لموضع كل إضافة؛ يظهر شريط تنبيه تلقائي عند وجود تحديث لم تره من قبل.</li>
       </ul>
     </div>
   </div>
@@ -1849,6 +1875,7 @@
     <div class="rule-group-head"><span class="rule-group-num">٤</span><h3>ارتباط قصصها الأربع بفتنة الدجال</h3></div>
     <ul class="rule-list">
       <li class="rule-item"><span class="rule-text">أشار جمع من أهل العلم (منهم شيخ الإسلام ابن تيمية) إلى أن قصص السورة الأربع تعالج أربع فتن كبرى يأتي بها الدجال: فتنة الدين (أصحاب الكهف)، وفتنة المال (صاحب الجنتين)، وفتنة العلم (موسى والخضر)، وفتنة السلطان والتمكين (ذو القرنين)؛ فمن استحضر معانيها وعمل بها كان ذلك سببًا في عصمته من هذه الفتن بإذن الله.</span></li>
+      <li class="rule-item"><span class="rule-text">جاء في المعجم الكبير للطبراني عن النبي ﷺ: «ما بين خلق آدم وقيام الساعة ما من فتنة أعظم من الدجال»؛ ولذا كان ﷺ يستعيذ في صلاته من أربع، منها فتنة المسيح الدجال؛ فناسب أن تكون سورة الكهف -بقصصها الجامعة لأعظم الفتن- هي العاصم المخصوص من أعظم فتنة تصيب هذه الأمة.</span></li>
     </ul>
   </div>
 
@@ -1930,6 +1957,16 @@
       <li class="rule-item"><span class="rule-text"><b>كلمة السورة الوسطى:</b> ذكر بعض أهل العلم أن كلمة «وليتلطف» في قصة أصحاب الكهف تقع قريبًا من منتصف القرآن الكريم لفظًا، وفي وقوع معنى اللطف في هذا الموضع دلالة على أن الرفق واللطف منهج حياة دعا إليه القرآن والسنة، حتى في أشد المواقف حرجًا.</span></li>
       <li class="rule-item"><span class="rule-text"><b>دورة كاملة من الاستضعاف إلى التمكين:</b> تبدأ السورة بأشد صور الاستضعاف (أصحاب الكهف فارّون مختبئون)، ثم شيء من الانفراج (صاحبا الجنتين)، ثم قمة التمكين (ذو القرنين الملك العادل)؛ فمن يقرأ السورة يجد نموذجه المناسب في أي حال كان عليها من ضعف أو تمكين.</span></li>
       <li class="rule-item"><span class="rule-text"><b>قضية البعث خيط ناظم عبر السورة كلها:</b> لا تقتصر السورة على تقرير البعث في موضع واحد، بل يتكرر التذكير به بعد كل قصة من قصصها الأربع: فبعد أصحاب الكهف قال تعالى «ليعلموا أن وعد الله حق وأن الساعة لا ريب فيها»، وفي قصة الجنتين حكى إنكار صاحبها للساعة، وفي مثل الحياة الدنيا عقّب بذكر تسيير الجبال والحشر ونشر الكتاب، وفي خاتمة قصة ذي القرنين ذكر نفخ الصور وعرض جهنم؛ فجاءت القصص الأربع شواهد متتابعة على حقيقة واحدة هي البعث والجزاء.</span></li>
+    </ul>
+  </div>
+
+  <div class="rule-group">
+    <div class="rule-group-head"><span class="rule-group-num">٦</span><h3>خلاصة سريعة: عصمة كل فتنة بجملة واحدة</h3></div>
+    <ul class="rule-list">
+      <li class="rule-item"><span class="rule-text"><b>عصمة فتنة الدين:</b> الصحبة الصالحة، وتذكر الآخرة.</span></li>
+      <li class="rule-item"><span class="rule-text"><b>عصمة فتنة المال:</b> فهم حقيقة الدنيا، وتذكر الآخرة.</span></li>
+      <li class="rule-item"><span class="rule-text"><b>عصمة فتنة العلم:</b> التواضع، وعدم الاغترار بالعلم.</span></li>
+      <li class="rule-item"><span class="rule-text"><b>عصمة فتنة السلطة:</b> الإخلاص لله في الأعمال، وتذكر الآخرة.</span></li>
     </ul>
   </div>
 </template>
@@ -2053,6 +2090,20 @@
   </div>
 </div>
 
+<!-- ===== نافذة آخر التحديثات ===== -->
+<div class="modal-overlay" id="updatesOverlay">
+  <div class="modal-box">
+    <button class="modal-close" id="updatesClose">×</button>
+    <div class="modal-pad">
+      <div class="rules-header">
+        <h2>🆕 آخر التحديثات</h2>
+        <p>كل ما أُضيف أو تحسّن في التطبيق مؤخرًا، مع روابط مباشرة لموضعه</p>
+      </div>
+      <div id="updatesList"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 const data = [
 {
@@ -2076,7 +2127,8 @@ const data = [
     {cat:"عقدي", text:"«الحمد» سُلَّم لرحمة الله؛ ومنه حديث الشفاعة العظمى: يسجد النبي ﷺ تحت العرش فيفتح الله عليه من المحامد ما لم يفتحه على أحد قبله، فينال بذلك «المقام المحمود» الذي يحمده عليه الخلائق جميعًا لبدء فصل القضاء يوم القيامة.", src:"صالح المغامسي، تأملات قرآنية في سورة الكهف"},
     {cat:"بلاغي", text:"من نكت السورة البلاغية أن افتتاحها بالحمد يرتبط بمصير أهل الجنة؛ فكما بدأت السورة بـ«الحمد لله»، فإن «الحمد لله» هو آخر دعاء أهل الجنة كما جاء في التنزيل: «وآخر دعواهم أن الحمد لله رب العالمين»؛ فالحمد بداية الإيمان في الدنيا وخاتمة النعيم في الآخرة.", src:"صالح المغامسي، تأملات قرآنية في سورة الكهف"},
     {cat:"لغوي", text:"يفترق «الحمد» عن «الشكر»: فالشكر سببه النعمة، أما الحمد فيكون على كل حال؛ ولذا لا يرتضي أهل العلم العبارة الدارجة «الحمد لله الذي لا يُحمد على مكروه سواه»، والصواب أن يُقال: «الحمد لله على كل حال، ونعوذ بالله من حال أهل النار».", src:"صالح المغامسي، تأملات قرآنية في سورة الكهف"},
-    {cat:"عقدي", text:"يتضمن مطلع السورة أربعة أنواع من المحامد التي تجمع أصول الاعتقاد: الحمد على الربوبية وكمال تصرف الله في خلقه، والحمد على الألوهية لاستحقاقه وحده أن يُعبد ولا يُشرك به أحد، والحمد على الأسماء والصفات لبلوغها الغاية في الكمال، والحمد على إنزال الكتاب لكونه التشريع الذي يبيّن الحق من الضلال؛ وفي تصدير السورة بالحمد على إنزال الكتاب إشارة إلى أن النجاة من ابتلاء زينة الأرض إنما تكون بالاسترشاد بهذا الكتاب.", src:"صالح آل الشيخ، مقاصد ومعاني سورة الكهف"}
+    {cat:"عقدي", text:"يتضمن مطلع السورة أربعة أنواع من المحامد التي تجمع أصول الاعتقاد: الحمد على الربوبية وكمال تصرف الله في خلقه، والحمد على الألوهية لاستحقاقه وحده أن يُعبد ولا يُشرك به أحد، والحمد على الأسماء والصفات لبلوغها الغاية في الكمال، والحمد على إنزال الكتاب لكونه التشريع الذي يبيّن الحق من الضلال؛ وفي تصدير السورة بالحمد على إنزال الكتاب إشارة إلى أن النجاة من ابتلاء زينة الأرض إنما تكون بالاسترشاد بهذا الكتاب.", src:"صالح آل الشيخ، مقاصد ومعاني سورة الكهف"},
+    {cat:"لغوي", text:"سورة الكهف واحدة من خمس سور فقط في القرآن الكريم افتُتحت بـ«الحمد لله»: الفاتحة، والأنعام، والكهف، وسبأ، وفاطر؛ وكلها تبتدئ بتمجيد الله وتقديسه والاعتراف له بالعظمة والكبرياء والجلال والكمال، فتشترك في مطلع واحد يؤسس لسائر ما يأتي بعده من موضوعات.", src:"محمود حسن حجازي، الأنوار البهية في سورة الكهف الجلية"}
   ]
 },
 {
@@ -2242,7 +2294,8 @@ const data = [
     {cat:"لغوي", text:"وصفهم لأنفسهم بأنهم لو أشركوا لكانوا قد «قالوا شططًا» أي تجاوزوا الحد وظلموا أنفسهم، وفي هذا اعتراف منهم بعظم جرم الشرك ولو صدر ممن حولهم لا منهم هم.", src:"القرطبي، الجامع لأحكام القرآن"},
     {cat:"سلوكي", text:"جهر الفتية بكلمة التوحيد في وجه قومهم من غير تردد نموذج للشجاعة في قول الحق؛ وقد بايع الصحابة النبي ﷺ على نحو هذا المعنى، كما في حديث عبادة بن الصامت رضي الله عنه: «بايعنا رسول الله ﷺ على السمع والطاعة في المنشط والمكره... وعلى أن نقول بالحق أينما كنا، لا نخاف في الله لومة لائم» (متفق عليه).", src:"البخاري ومسلم (عن طريق عمار الخطيب، قصة أصحاب الكهف)"},
     {cat:"سلوكي", text:"جمع الله للفتية في «الربط على قلوبهم» أربع فضائل: إنزال الصبر عليهم، وتثبيتهم على الحق، وحصول الطمأنينة لهم بعد الفزع، والشجاعة التي منعتهم من الفرار وقت الشدة؛ فكل هذه المعاني تجتمع في دلالة لفظ «الربط» وحده.", src:"عقيل الشمري، تفسير وتدبرات سورة الكهف"},
-    {cat:"لغوي", text:"خصّ الفتية «الدعاء» من بين سائر أنواع العبادة حين قالوا «لن ندعو من دونه إلها»؛ لأن الدعاء يجمع أنواعًا كثيرة من العبادة في آن واحد: خضوعًا واستكانة، ورجاءً ورغبة، ورهبة وإخلاصًا وصدقًا، فذكره أبلغ من ذكر غيره من أفراد العبادة.", src:"عقيل الشمري، تفسير وتدبرات سورة الكهف"}
+    {cat:"لغوي", text:"خصّ الفتية «الدعاء» من بين سائر أنواع العبادة حين قالوا «لن ندعو من دونه إلها»؛ لأن الدعاء يجمع أنواعًا كثيرة من العبادة في آن واحد: خضوعًا واستكانة، ورجاءً ورغبة، ورهبة وإخلاصًا وصدقًا، فذكره أبلغ من ذكر غيره من أفراد العبادة.", src:"عقيل الشمري، تفسير وتدبرات سورة الكهف"},
+    {cat:"عقدي", text:"قصة أصحاب الكهف هي أخفى قصص السورة وأبعدها زمانًا، ومع ذلك كانت الأدلّ على مقصدها الأعظم (إثبات التوحيد)؛ فسبب فراقهم قومهم لم يكن إلا الشرك، وكان لازمًا لأمرهم بعد طول رقادهم أن يعلنوا التوحيد وإبطال الشرك من جديد، فجاءت أخفى القصص شاهدًا على أظهر المقاصد.", src:"البقاعي، مصاعد النظر للإشراف على مقاصد السور (نقلًا عن محمود حسن حجازي، الأنوار البهية)"}
   ]
 },
 {
@@ -2921,7 +2974,8 @@ const data = [
     {cat:"لغوي", text:"التمكين تمهيد الأسباب؛ فقد سخّر الله له أسباب القوة والسيطرة حتى استوى عنده السير في الليل والنهار، وذلّل له طرق الأرض ومسالكها، وأعطاه من كل ما يحتاج إليه المُلوك في فتح البلاد ومدافعة الأعداء.", src:"عبدالله السادة، ثلاثون مجلسًا في تفسير سورة الكهف"},
     {cat:"عقدي", text:"الثناء على الحاكم لا يكون بمجرد الشجاعة أو الفتوح أو التمكين وحده؛ فقد مكّن الله لكثير من الأمم ثم أخذهم بذنوبهم، فلا بد أن ينضم إلى ذلك الإيمان بالله واليوم الآخر وتحقيق العدل، وإلا فالقوة والملك المجرد قد يدعوان إلى الطغيان.", src:"ناصر العمر، تدبر سورة الكهف"},
     {cat:"عقدي", text:"التمكين في الأرض بيد الله يمتنّ به على من يشاء من عباده، ومنّة التمكين تستوجب من المؤمن شكرها والسعي للحفاظ عليها، لا التواكل بالاعتماد على مجرد فضل الله دون أخذ بالأسباب المتاحة له.", src:"ناصر العمر، تدبر سورة الكهف"},
-    {cat:"سياسي", text:"يُقارَن بين نماذج الملك في القرآن: فيوسف عليه السلام لم يُؤتَ ملكًا مطلقًا بدليل قوله «رب قد آتيتني من الملك» (من للتبعيض)، وداود وسليمان عليهما السلام أوتيا ملكًا تامًا وخلافة مطلقة، أما ذو القرنين فمكّن الله له فأخذ بالأسباب على مبدأ الثواب والعقاب؛ وقد استُشهد برأي الجاحظ في أن سياسة الناس لا تستقيم إلا بمبدأي «الرغبة والرهبة»، فيُجازى المحسن ويُردع الظالم، وهو ما طبّقه ذو القرنين بنص قوله «أما من ظلم فسوف نعذبه... وأما من آمن وعمل صالحًا فله جزاءً الحسنى».", src:"صالح المغامسي، تأملات قرآنية في سورة الكهف"}
+    {cat:"سياسي", text:"يُقارَن بين نماذج الملك في القرآن: فيوسف عليه السلام لم يُؤتَ ملكًا مطلقًا بدليل قوله «رب قد آتيتني من الملك» (من للتبعيض)، وداود وسليمان عليهما السلام أوتيا ملكًا تامًا وخلافة مطلقة، أما ذو القرنين فمكّن الله له فأخذ بالأسباب على مبدأ الثواب والعقاب؛ وقد استُشهد برأي الجاحظ في أن سياسة الناس لا تستقيم إلا بمبدأي «الرغبة والرهبة»، فيُجازى المحسن ويُردع الظالم، وهو ما طبّقه ذو القرنين بنص قوله «أما من ظلم فسوف نعذبه... وأما من آمن وعمل صالحًا فله جزاءً الحسنى».", src:"صالح المغامسي، تأملات قرآنية في سورة الكهف"},
+    {cat:"سياسي", text:"تصف السورة في شخصية ذي القرنين مقومات القائد الصالح المؤمن الراشد: العزيمة القوية، ورجاحة العقل، وسداد الرأي، ونفاذ البصيرة؛ وهي صفات تُعين على مكافحة الظلم، وإرجاع الأمور إلى نصابها، ونشر لواء العدل، والقيام بأجلّ الأعمال مع التواضع ونسبة النتائج إلى الله لا إلى النفس.", src:"فهد السويدان، الصراع بين الحق والباطل في سورة الكهف (نقلًا عن محمود حسن حجازي، الأنوار البهية)"}
   ]
 },
 {
@@ -3309,6 +3363,22 @@ function ayahHtml(a, i){
   }
   return `<span class="ayah-block" data-ayah-idx="${i}">${bodyHtml}</span> `;
 }
+
+/* ===== سجل التحديثات: كل إضافة جديدة للفوائد تُسجَّل هنا لعرضها للمستخدم تلقائيًا =====
+   عند إضافة فوائد جديدة مستقبلًا، أضف عنصرًا جديدًا في نهاية هذه المصفوفة (id فريد، وقائمة items بمواضع الإضافات) */
+const CHANGELOG = [
+  {
+    id: '2026-07-23-a',
+    date: '٢٣ يوليو ٢٠٢٦',
+    items: [
+      {ayah: 1, desc: 'خمس سور فقط في القرآن تبدأ بـ«الحمد لله» — وسورة الكهف إحداها'},
+      {ayah: 14, desc: 'لطيفة البقاعي: أخفى قصص السورة زمانًا هي أدلّها على مقصدها الأعظم'},
+      {ayah: 84, desc: 'صفات القائد الصالح المستخلَصة من شخصية ذي القرنين'},
+      {section: 'virtues', desc: 'حديث الطبراني في عِظَم فتنة الدجال، وربطها بفتنة السورة الأربع'},
+      {section: 'maqasid', desc: 'خلاصة سريعة: عصمة كل فتنة من فتن السورة الأربع بجملة واحدة'},
+    ]
+  }
+];
 
 /* ===== تقسيم السورة إلى صفحات مصحف تقريبية ===== */
 const AYAT_PER_PAGE = 10;
@@ -4209,6 +4279,63 @@ document.getElementById('importSettingsFile').addEventListener('change', (e)=>{
   document.getElementById('communityBannerClose').addEventListener('click', ()=>{
     banner.style.display = 'none';
     try{ localStorage.setItem(dismissKey, '1'); }catch(e){ /* تجاهل */ }
+  });
+})();
+
+/* ===== سجل آخر التحديثات: يظهر شريط تلقائي عند وجود إضافات لم يرها المستخدم بعد ===== */
+const LAST_SEEN_CHANGELOG_KEY = 'kahf_tadabbur_last_seen_changelog';
+const updatesOverlay = document.getElementById('updatesOverlay');
+function buildUpdatesList(){
+  const container = document.getElementById('updatesList');
+  container.innerHTML = '';
+  if(!CHANGELOG.length){
+    container.innerHTML = '<p class="favorites-empty">لا توجد تحديثات مسجَّلة بعد.</p>';
+    return;
+  }
+  [...CHANGELOG].reverse().forEach(entry=>{
+    const header = document.createElement('div');
+    header.className = 'updates-date-header';
+    header.textContent = entry.date;
+    container.appendChild(header);
+    entry.items.forEach(item=>{
+      const row = document.createElement('div');
+      row.className = 'update-item';
+      row.innerHTML = `<span>${item.desc}</span><button type="button" class="update-goto-btn">اذهب ←</button>`;
+      row.querySelector('.update-goto-btn').addEventListener('click', ()=>{
+        updatesOverlay.classList.remove('open');
+        if(item.ayah){
+          const idx = data.findIndex(a=>a.n === item.ayah);
+          if(idx !== -1){ renderPage(pageOfAyahIndex(idx)); openVersePanel(idx); }
+        } else if(item.section){
+          openTemplateModal('tpl-' + item.section);
+        }
+      });
+      container.appendChild(row);
+    });
+  });
+}
+document.getElementById('fabUpdates').onclick = ()=>{ buildUpdatesList(); updatesOverlay.classList.add('open'); };
+document.getElementById('updatesClose').onclick = ()=> updatesOverlay.classList.remove('open');
+updatesOverlay.onclick = (e)=>{ if(e.target === updatesOverlay) updatesOverlay.classList.remove('open'); };
+
+(function initUpdatesBanner(){
+  if(!CHANGELOG.length) return;
+  const banner = document.getElementById('updatesBanner');
+  if(!banner) return;
+  const latest = CHANGELOG[CHANGELOG.length - 1];
+  let lastSeen = null;
+  try{ lastSeen = localStorage.getItem(LAST_SEEN_CHANGELOG_KEY); }catch(e){ /* تجاهل */ }
+  if(lastSeen === latest.id) return; // سبق للمستخدم رؤية هذا التحديث
+  banner.style.display = 'flex';
+  document.getElementById('updatesBannerBtn').addEventListener('click', ()=>{
+    banner.style.display = 'none';
+    buildUpdatesList();
+    updatesOverlay.classList.add('open');
+    try{ localStorage.setItem(LAST_SEEN_CHANGELOG_KEY, latest.id); }catch(e){ /* تجاهل */ }
+  });
+  document.getElementById('updatesBannerClose').addEventListener('click', ()=>{
+    banner.style.display = 'none';
+    try{ localStorage.setItem(LAST_SEEN_CHANGELOG_KEY, latest.id); }catch(e){ /* تجاهل */ }
   });
 })();
 
