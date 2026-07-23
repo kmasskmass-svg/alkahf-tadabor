@@ -894,6 +894,21 @@
   .opt-btn{padding:4px 10px;border-radius:16px;border:1px solid var(--line);background:#fff;cursor:pointer;font-family:'Amiri', serif;font-size:10.5px;}
   .opt-btn.active{background:var(--teal-deep); color:#fff; border-color:var(--teal-deep);}
   .export-btn-main{margin-top:4px; width:100%; padding:9px; background:var(--gold); color:#fff; border:none; border-radius:6px; font-family:'Amiri', serif; font-size:12px; cursor:pointer;}
+  .card-back-btn{
+    display:inline-block; margin-bottom:12px; background:#fff; color:var(--teal-deep); border:1.5px solid var(--teal-deep);
+    border-radius:16px; padding:6px 16px; font-family:'Amiri', serif; font-size:12.5px; cursor:pointer;
+  }
+  .card-back-btn:hover{ background:var(--teal-deep); color:#fff; }
+  .card-nav-row{
+    display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:10px;
+  }
+  .card-nav-btn{
+    background:var(--teal-deep); color:#fff; border:none; border-radius:14px; padding:6px 14px;
+    font-family:'Amiri', serif; font-size:12px; cursor:pointer;
+  }
+  .card-nav-btn:hover{ background:var(--teal); }
+  .card-nav-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .card-nav-counter{ font-family:'Amiri', serif; font-size:12.5px; color:var(--ink); min-width:60px; text-align:center; }
   .export-btn-main:hover{background:var(--maroon);}
 
   .tcard{position:relative; padding:36px 28px; border-radius:4px; text-align:center;}
@@ -1381,10 +1396,18 @@
     <div class="modal-pad">
       <div class="rules-header">
         <h2 id="cardTitle">تصدير بطاقة فوائد</h2>
-        <p>اختر التنسيق ثم اضغط تصدير البطاقة (الفوائد المُختارة تُحدَّد من قائمة الفوائد قبل هذه النافذة)</p>
+        <p>اختر التنسيق ثم اضغط تصدير البطاقة</p>
       </div>
+      <button type="button" id="cardBackBtn" class="card-back-btn">→ الرجوع لاختيار الفوائد</button>
       <div class="card-modal-layout">
         <div class="card-controls">
+          <div class="control-block">
+            <h4>نمط التصدير</h4>
+            <div class="font-row" id="exportModeRow">
+              <div class="opt-btn active" data-mode="single">بطاقة واحدة مجمّعة</div>
+              <div class="opt-btn" data-mode="multi">بطاقة منفصلة لكل فائدة</div>
+            </div>
+          </div>
           <div class="control-row-pair">
             <div class="control-block">
               <h4>الألوان</h4>
@@ -1406,6 +1429,7 @@
             </div>
           </div>
           <button class="export-btn-main" id="doExport">⬇ تصدير البطاقة صورة</button>
+          <button class="export-btn-main" id="doExportAll" style="display:none;">⬇⬇ تنزيل كل البطاقات</button>
           <div class="share-row">
             <button class="share-btn native" id="doShareNative">📤 مشاركة</button>
             <button class="share-btn wa" id="doShareWA">واتساب</button>
@@ -1414,6 +1438,11 @@
           <p style="font-family:'Amiri', serif; font-size:10px; color:#8a8068; margin-top:8px;">ملاحظة: زر «مشاركة» يفتح قائمة المشاركة المباشرة للصورة على الجوال. أما زرا واتساب وتيليجرام فيرسلان نص الفائدة مباشرة، وبإمكانك إرفاق الصورة المُصدَّرة يدويًا معه.</p>
         </div>
         <div class="card-preview-wrap">
+          <div id="cardNavRow" class="card-nav-row" style="display:none;">
+            <button type="button" id="cardPrevBtn" class="card-nav-btn">‹ السابقة</button>
+            <span id="cardNavCounter" class="card-nav-counter"></span>
+            <button type="button" id="cardNextBtn" class="card-nav-btn">التالية ›</button>
+          </div>
           <div id="cardPreview"></div>
         </div>
       </div>
@@ -1685,14 +1714,16 @@
       <h4>تصدير بطاقة فوائد مزخرفة</h4>
       <p>الفوائد التي تختارها بعلامة الصح (✔) في نافذة فوائد الآية هي ما يظهر في البطاقة. بعد اختيارك، اضغط زر «🖼 تصدير بطاقة هذه الآية ومشاركتها» لتنفتح نافذة تحكم كاملة بمعاينة كبيرة للبطاقة:</p>
       <ul>
+        <li><b>الرجوع لاختيار الفوائد:</b> زر «→ الرجوع لاختيار الفوائد» أعلى النافذة يعيدك مباشرة لعلامات الصح عند فوائد هذه الآية لتعديل اختيارك (تفعيل أو إلغاء فائدة)، دون الحاجة للخروج من النافذة والعودة للمصحف من جديد؛ واختيارك يبقى محفوظًا كما تركته.</li>
+        <li><b>نمط التصدير — بطاقة واحدة أو بطاقات منفصلة:</b> اختر «بطاقة واحدة مجمّعة» لتظهر كل الفوائد المُختارة معًا في بطاقة واحدة (كالمعتاد)، أو اختر «بطاقة منفصلة لكل فائدة» ليصبح لكل فائدة مُختارة بطاقتها الخاصة المستقلة؛ في هذا النمط تظهر أزرار تنقّل «‹ السابقة» و«التالية ›» لمعاينة كل بطاقة على حدة قبل التصدير، وزر إضافي «⬇⬇ تنزيل كل البطاقات» يحفظها جميعًا صورًا منفصلة دفعة واحدة.</li>
         <li><b>اختصار فائدة قبل التصدير:</b> بجانب كل فائدة زر «✂️ اختصار للبطاقة» يقترح نسخة مختصرة تلقائيًا (اختصار آلي بسيط، وليس بالذكاء الاصطناعي، إذ يقتطع النص عادة عند الفكرة الأساسية قبل تفصيلها)، وتظهر لك في صندوق نص قابل للتعديل الكامل قبل التصدير؛ عدّل ما تشاء بحرية، أو اضغط «↺ إلغاء الاختصار» للعودة للنص الكامل في أي وقت.</li>
         <li><b>الألوان:</b> أربع لوحات جاهزة (زمردي ذهبي، عنابي كريمي، كحلي فضي، زيتوني نحاسي).</li>
         <li><b>الخط:</b> أربعة خطوط عربية (أميري، رقعة، لطيف، كوفي).</li>
         <li><b>البرواز:</b> أربعة أنماط إطار (كلاسيكي، مزخرف بزوايا، هندسي متقطع، بسيط).</li>
         <li><b>الحجم:</b> صغيرة، متوسطة، كبيرة.</li>
         <li>البطاقة نفسها تحمل أعلاها اسم التطبيق واسم المُعِدّ تلقائيًا.</li>
-        <li>تظهر معاينة حيّة كبيرة للبطاقة أثناء التعديل، ثم زر «⬇ تصدير البطاقة صورة» يحفظها ملف PNG على جهازك.</li>
-        <li><b>المشاركة:</b> زر «📤 مشاركة» يفتح قائمة المشاركة المباشرة على الجوال (تشمل واتساب وتيليجرام وغيرهما)، وزرا «واتساب» و«تيليجرام» يرسلان نص الفوائد المختارة مباشرة كرسالة نصية.</li>
+        <li>تظهر معاينة حيّة كبيرة للبطاقة أثناء التعديل، ثم زر «⬇ تصدير البطاقة صورة» يحفظها ملف PNG على جهازك (أو «⬇ تصدير هذه البطاقة» للبطاقة الحالية فقط في نمط البطاقات المنفصلة).</li>
+        <li><b>المشاركة:</b> زر «📤 مشاركة» يفتح قائمة المشاركة المباشرة على الجوال (تشمل واتساب وتيليجرام وغيرهما)، وزرا «واتساب» و«تيليجرام» يرسلان نص الفوائد المختارة مباشرة كرسالة نصية (في نمط البطاقات المنفصلة، يُرسَل نص البطاقة المعروضة حاليًا فقط).</li>
       </ul>
     </div>
   </div>
@@ -3431,6 +3462,13 @@ const CHANGELOG = [
       {ayah: 36, desc: 'قراءتا «منهما» و«منها»: تصوير مرحلتي فخر صاحب الجنتين ثم بداية سلب النعمة عنه'},
       {ayah: 43, desc: 'قراءتا «تكن» و«يكن»: دلالة ضعف الفئة المفتقَدة وقوتها معًا'},
     ]
+  },
+  {
+    id: '2026-07-23-d',
+    date: '٢٣ يوليو ٢٠٢٦ (٤)',
+    items: [
+      {ayah: 1, desc: 'تحسين تصدير البطاقات: زر «الرجوع لاختيار الفوائد» بدل الخروج والعودة، وخيار بطاقة منفصلة لكل فائدة مع معاينة وتنزيل جماعي — جرّبها بفتح فوائد أي آية ثم «🖼 تصدير بطاقة»'},
+    ]
   }
 ];
 
@@ -3742,7 +3780,18 @@ function openVersePanel(idx){
   versePanelNotes.innerHTML = '';
   markVerseVisited(a.n);
   // إعادة تعيين اختيار الفوائد لهذه الآية: كل الفوائد مُختارة افتراضيًا للبطاقة
-  cardState = { ayahIndex: idx, palette: cardState ? cardState.palette : 0, font: cardState ? cardState.font : 'Amiri', size: cardState ? cardState.size : 'medium', frame: cardState ? cardState.frame : 'classic', selected: new Set(a.notes.map((_,i)=>i)), shortText: {} };
+  const sameAyahAsBefore = cardState && cardState.ayahIndex === idx;
+  cardState = {
+    ayahIndex: idx,
+    palette: cardState ? cardState.palette : 0,
+    font: cardState ? cardState.font : 'Amiri',
+    size: cardState ? cardState.size : 'medium',
+    frame: cardState ? cardState.frame : 'classic',
+    selected: sameAyahAsBefore ? cardState.selected : new Set(a.notes.map((_,i)=>i)),
+    shortText: sameAyahAsBefore ? cardState.shortText : {},
+    multiMode: false,
+    multiIndex: 0
+  };
   a.notes.forEach((nt, i)=>{
     const noteId = a.n + '-' + i;
     const starred = isFavorite(noteId);
@@ -3752,7 +3801,7 @@ function openVersePanel(idx){
     if(nt.related && nt.related.length){
       relatedHtml = nt.related.map(rn=>`<span class="related-ayah-link" data-ayah="${rn}">🔗 آية ذات صلة: ${ar(rn)}</span>`).join(' ');
     }
-    g.innerHTML = `<input type="checkbox" class="cat-group-check" data-i="${i}" checked title="تضمين هذه الفائدة في البطاقة المصدَّرة">
+    g.innerHTML = `<input type="checkbox" class="cat-group-check" data-i="${i}" ${cardState.selected.has(i) ? 'checked' : ''} title="تضمين هذه الفائدة في البطاقة المصدَّرة">
       <div class="cat-group-body">
         <div class="cat-group-toolbar">
           <span class="cat-label cat-${nt.cat} cat-label-clickable" data-cat="${nt.cat}" title="عرض كل الفوائد ${nt.cat} في السورة">${nt.cat} 🔍</span>
@@ -4926,21 +4975,41 @@ const frameStyles = [
   {id:'plain', name:'بسيط', corners:false}
 ];
 
-let cardState = { ayahIndex:0, palette:0, font:'Amiri', size:'medium', frame:'classic', selected:new Set() };
+let cardState = { ayahIndex:0, palette:0, font:'Amiri', size:'medium', frame:'classic', selected:new Set(), multiMode:false, multiIndex:0 };
 
 const cardOverlay = document.getElementById('cardOverlay');
 document.getElementById('cardClose').onclick = ()=> cardOverlay.classList.remove('open');
 cardOverlay.onclick = (e)=>{ if(e.target === cardOverlay) cardOverlay.classList.remove('open'); };
+document.getElementById('cardBackBtn').addEventListener('click', ()=>{
+  cardOverlay.classList.remove('open');
+  openVersePanel(cardState.ayahIndex);
+});
 
 versePanelExportBtn.addEventListener('click', ()=>{
   versePanelOverlay.classList.remove('open');
+  cardState.multiMode = false;
+  cardState.multiIndex = 0;
   cardOverlay.classList.add('open');
   buildCardModal();
+});
+
+document.querySelectorAll('#exportModeRow .opt-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#exportModeRow .opt-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    cardState.multiMode = (btn.dataset.mode === 'multi');
+    cardState.multiIndex = 0;
+    renderCardPreview();
+  });
 });
 
 function buildCardModal(){
   const a = data[cardState.ayahIndex];
   document.getElementById('cardTitle').textContent = `تصدير بطاقة فوائد — الآية ${ar(a.n)}`;
+
+  document.querySelectorAll('#exportModeRow .opt-btn').forEach(b=>{
+    b.classList.toggle('active', (b.dataset.mode === 'multi') === cardState.multiMode);
+  });
 
   const pr = document.getElementById('paletteRow');
   pr.innerHTML = '';
@@ -5008,29 +5077,61 @@ function buildCardModal(){
   renderCardPreview();
 }
 
-function renderCardPreview(){
-  const a = data[cardState.ayahIndex];
+function buildCardHTML(a, notesToShow){
   const pal = palettes[cardState.palette];
   const sizeCfg = sizes.find(s=>s.value === cardState.size);
   const frameCfg = frameStyles.find(f=>f.id === cardState.frame);
-  const selected = a.notes
-    .map((n,i)=>({ n, i }))
-    .filter(({i})=>cardState.selected.has(i));
-  const el = document.getElementById('cardPreview');
   const corners = frameCfg.corners
     ? `<span class="tc-corner tl">${frameCfg.glyph}</span><span class="tc-corner tr">${frameCfg.glyph}</span><span class="tc-corner bl">${frameCfg.glyph}</span><span class="tc-corner br">${frameCfg.glyph}</span>`
     : '';
-  el.innerHTML = `
+  return `
     <div class="tcard frame-${frameCfg.id}" id="tcardEl" style="width:${sizeCfg.width}px; background:${pal.bg}; color:${pal.ink}; font-family:'${cardState.font}', serif; --card-accent:${pal.accent}; font-size:${sizeCfg.base}px;">
       ${corners}
       <div class="tc-appname" style="color:${pal.accent};">تدبرات — سورة الكهف</div>
       <div class="tc-preparer" style="color:${pal.ink};">إعداد: كليب بن أحمد بن ضيف الله الزهراني</div>
       <div class="tc-num" style="color:${pal.accent}; font-size:0.85em;"><span class="tc-num-badge">${ar(a.n)}</span></div>
       <div class="tc-ayah" style="font-size:1.7em; color:${pal.ink};">${a.ar}</div>
-      ${selected.map(({n,i})=>`<div class="tc-note"><span class="tc-cat" style="color:${pal.accent}">${n.cat}</span>${(cardState.shortText && cardState.shortText[i]) || n.text}</div>`).join('') || '<div class="tc-note" style="text-align:center;opacity:.6;">لم تُختر أي فائدة بعد</div>'}
+      ${notesToShow.map(({n,i})=>`<div class="tc-note"><span class="tc-cat" style="color:${pal.accent}">${n.cat}</span>${(cardState.shortText && cardState.shortText[i]) || n.text}</div>`).join('') || '<div class="tc-note" style="text-align:center;opacity:.6;">لم تُختر أي فائدة بعد</div>'}
     </div>`;
+}
+
+function renderCardPreview(){
+  const a = data[cardState.ayahIndex];
+  const selected = a.notes
+    .map((n,i)=>({ n, i }))
+    .filter(({i})=>cardState.selected.has(i));
+  const el = document.getElementById('cardPreview');
+  const navRow = document.getElementById('cardNavRow');
+  const exportAllBtn = document.getElementById('doExportAll');
+  const exportBtn = document.getElementById('doExport');
+
+  if(cardState.multiMode && selected.length > 0){
+    if(cardState.multiIndex >= selected.length) cardState.multiIndex = selected.length - 1;
+    if(cardState.multiIndex < 0) cardState.multiIndex = 0;
+    const current = selected[cardState.multiIndex];
+    el.innerHTML = buildCardHTML(a, [current]);
+    navRow.style.display = selected.length > 1 ? 'flex' : 'none';
+    document.getElementById('cardNavCounter').textContent = `${ar(cardState.multiIndex + 1)} من ${ar(selected.length)}`;
+    document.getElementById('cardPrevBtn').disabled = cardState.multiIndex === 0;
+    document.getElementById('cardNextBtn').disabled = cardState.multiIndex === selected.length - 1;
+    exportAllBtn.style.display = selected.length > 1 ? 'block' : 'none';
+    exportBtn.textContent = '⬇ تصدير هذه البطاقة';
+  } else {
+    el.innerHTML = buildCardHTML(a, selected);
+    navRow.style.display = 'none';
+    exportAllBtn.style.display = 'none';
+    exportBtn.textContent = '⬇ تصدير البطاقة صورة';
+  }
   fitCardPreview();
 }
+document.getElementById('cardPrevBtn').addEventListener('click', ()=>{
+  cardState.multiIndex--;
+  renderCardPreview();
+});
+document.getElementById('cardNextBtn').addEventListener('click', ()=>{
+  cardState.multiIndex++;
+  renderCardPreview();
+});
 
 /* تصغير عرض البطاقة تلقائيًا لتظهر كاملة داخل منطقة المعاينة دون قص أو تمرير.
    نستخدم خاصية zoom بدل transform:scale لأن zoom يُصغّر الحجم الفعلي للعنصر
@@ -5069,14 +5170,53 @@ function getCardCanvas(){
   }).catch(err=>{ restore(); throw err; });
 }
 
+function getSelectedNoteEntries(){
+  const a = data[cardState.ayahIndex];
+  return a.notes.map((n,i)=>({n,i})).filter(({i})=>cardState.selected.has(i));
+}
+function currentShareEntries(){
+  const selected = getSelectedNoteEntries();
+  if(cardState.multiMode && selected.length){
+    return [selected[Math.min(cardState.multiIndex, selected.length-1)]];
+  }
+  return selected;
+}
+
 document.getElementById('doExport').addEventListener('click', ()=>{
   getCardCanvas().then(canvas=>{
     const a = data[cardState.ayahIndex];
+    const suffix = cardState.multiMode ? `-فائدة-${cardState.multiIndex+1}` : '';
     const link = document.createElement('a');
-    link.download = `تدبر-سورة-الكهف-اية-${a.n}.png`;
+    link.download = `تدبر-سورة-الكهف-اية-${a.n}${suffix}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
+});
+
+document.getElementById('doExportAll').addEventListener('click', async ()=>{
+  const selected = getSelectedNoteEntries();
+  if(!selected.length) return;
+  const originalIndex = cardState.multiIndex;
+  const btn = document.getElementById('doExportAll');
+  const originalLabel = btn.textContent;
+  for(let k = 0; k < selected.length; k++){
+    cardState.multiIndex = k;
+    renderCardPreview();
+    btn.textContent = `⏳ جارٍ التنزيل... (${ar(k+1)}/${ar(selected.length)})`;
+    await new Promise(r => setTimeout(r, 120)); // مهلة قصيرة لضمان اكتمال رسم البطاقة قبل التصوير
+    try{
+      const canvas = await getCardCanvas();
+      const a = data[cardState.ayahIndex];
+      const link = document.createElement('a');
+      link.download = `تدبر-سورة-الكهف-اية-${a.n}-فائدة-${k+1}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }catch(err){ /* تجاهل خطأ بطاقة واحدة ومتابعة الباقي */ }
+    await new Promise(r => setTimeout(r, 400)); // مهلة بين كل تنزيل وآخر لتفادي حجب المتصفح للتنزيلات المتتابعة
+  }
+  cardState.multiIndex = originalIndex;
+  renderCardPreview();
+  btn.textContent = originalLabel;
 });
 
 document.getElementById('doShareNative').addEventListener('click', ()=>{
@@ -5097,15 +5237,15 @@ document.getElementById('doShareNative').addEventListener('click', ()=>{
 
 document.getElementById('doShareWA').addEventListener('click', ()=>{
   const a = data[cardState.ayahIndex];
-  const selected = a.notes.filter((n,i)=>cardState.selected.has(i));
-  const text = `سورة الكهف — الآية ${ar(a.n)}:\n${a.ar}\n\n` + selected.map(n=>`• [${n.cat}] ${n.text}`).join('\n') + '\n\nمن تطبيق تدبرات';
+  const entries = currentShareEntries();
+  const text = `سورة الكهف — الآية ${ar(a.n)}:\n${a.ar}\n\n` + entries.map(({n})=>`• [${n.cat}] ${n.text}`).join('\n') + '\n\nمن تطبيق تدبرات';
   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 });
 
 document.getElementById('doShareTG').addEventListener('click', ()=>{
   const a = data[cardState.ayahIndex];
-  const selected = a.notes.filter((n,i)=>cardState.selected.has(i));
-  const text = `سورة الكهف — الآية ${ar(a.n)}:\n${a.ar}\n\n` + selected.map(n=>`• [${n.cat}] ${n.text}`).join('\n') + '\n\nمن تطبيق تدبرات';
+  const entries = currentShareEntries();
+  const text = `سورة الكهف — الآية ${ar(a.n)}:\n${a.ar}\n\n` + entries.map(({n})=>`• [${n.cat}] ${n.text}`).join('\n') + '\n\nمن تطبيق تدبرات';
   window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(text)}`, '_blank');
 });
 </script>
